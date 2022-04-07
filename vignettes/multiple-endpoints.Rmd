@@ -14,12 +14,12 @@ knitr::opts_chunk$set(
   warning = FALSE,
   out.width = "100%"
   )
-## These options cache the models and the model simulations in R
-## To run the actual models on your system, take the save options off.
-options(nlmixr.save=TRUE,
-        nlmixr.save.dir=system.file(package="nlmixr.examples"));
+# These options cache the models and the model simulations in R
+# To run the actual models on your system, take the save options off.
+options(nlmixr2.save=TRUE,
+        nlmixr2.save.dir=system.file(package="nlmixr.examples"))
 ```
-![nlmixr](logo.png)
+![nlmixr2](logo.png)
 
 # Multiple endpoints 
 
@@ -28,7 +28,7 @@ are common in pharmacometrics.  A classic example, (provided by Tomoo
 Funaki and Nick Holford) is Warfarin.
 
 ```{r}
-library(nlmixr)
+library(nlmixr2)
 library(ggplot2)
 ```
 
@@ -98,9 +98,9 @@ pk.turnover.emax <- function() {
 ```
 
 Notice there are two endpoints in the model `cp` and `effect`. Both
-are modeled in nlmixr using the `~` "modeled by" specification.
+are modeled in nlmixr2 using the `~` "modeled by" specification.
 
-To see more about how nlmixr will handle the multiple compartment
+To see more about how nlmixr2 will handle the multiple compartment
 model, it is quite informative to parse the model and print the
 information about that model. In this case an initial parsing would
 give:
@@ -111,7 +111,7 @@ ui
 ```
 
 In the middle of the printout, it shows how the data must be formatted
-(using the `cmt` and `dvid` data items) to allow nlmixr to model the
+(using the `cmt` and `dvid` data items) to allow nlmixr2 to model the
 multiple endpoint appropriately.
 
 Of course if you are interested you can directly access the
@@ -124,17 +124,17 @@ ui$multipleEndpoint
 Notice that the `cmt` and `dvid` items can use the named variables
 directly as either the `cmt` or `dvid` specification. This flexible
 notation makes it so you do not have to rename your compartments to
-run nlmixr model functions.
+run nlmixr2 model functions.
 
 The other thing to note is that the `cp` is specified by an ODE
-compartment above the number of compartments defined in the `RxODE`
-part of the `nlmixr` model. This is because `cp` is not a defined
+compartment above the number of compartments defined in the `rxode2`
+part of the `nlmixr2` model. This is because `cp` is not a defined
 compartment, but a related variable `cp`.
 
 The last thing to notice that the `cmt` items are numbered `cmt=5` for
 `cp` or `cmt=4` for `effect` even though they were specified in the
 model first by `cp` and `cmt`.  This ordering is because `effect` is a
-compartment in the `RxODE` system. Of course `cp` is related to the
+compartment in the `rxode2` system. Of course `cp` is related to the
 compartment `central`, and it may make more sense to pair `cp` with
 the `central` compartment.
 
@@ -220,15 +220,15 @@ the `cp` variable matches the `center` compartment.
 ## DVID vs CMT, which one is used
 When `dvid` and `cmt` are combined in the same dataset, the `cmt` data
 item is always used on the event information and the `dvid` is used on
-the observations.  `nlmixr` expects the `cmt` data item to match the
+the observations.  `nlmixr2` expects the `cmt` data item to match the
 `dvid` item for observations OR to be either zero or one for the
 `dvid` to replace the `cmt` information.
 
 If you do not wish to use `dvid` items to define multiple endpoints in
-nlmixr, you can set the following option:
+nlmixr2, you can set the following option:
 
 ```{r}
-options(RxODE.combine.dvid=FALSE)
+options(rxode2.combine.dvid=FALSE)
 ui2$multipleEndpoint
 ```
 
@@ -236,13 +236,13 @@ Then only `cmt` items are used for the multiple endpoint models.  Of
 course you can turn it on or off for different models if you wish:
 
 ```{r}
-options(RxODE.combine.dvid=TRUE)
+options(rxode2.combine.dvid=TRUE)
 ui2$multipleEndpoint
 ```
 
 
 ## Running a multiple endpoint model
-With this information, we can use the built-in warfarin dataset in nlmixr:
+With this information, we can use the built-in warfarin dataset in nlmixr2:
 
 ```{r}
 summary(warfarin)
@@ -333,12 +333,14 @@ print(fit.TOS);
 plot(fit.TOS);
 
 
-v1s <- nlmixr::vpc(fit.TOS, show=list(obs_dv=T), scales="free_y") +
-    ylab("Warfarin Cp [mg/L] or PCA") +
-    xlab("Time [h]");
-v2s <- nlmixr::vpc(fit.TOS, show=list(obs_dv=T), pred_corr = TRUE) +
-    ylab("Prediction Corrected Warfarin Cp [mg/L] or PCA") +
-    xlab("Time [h]");
+v1s <-
+  nlmixr2::vpc(fit.TOS, show=list(obs_dv=T), scales="free_y") +
+  ylab("Warfarin Cp [mg/L] or PCA") +
+  xlab("Time [h]");
+v2s <-
+  nlmixr2::vpc(fit.TOS, show=list(obs_dv=T), pred_corr = TRUE) +
+  ylab("Prediction Corrected Warfarin Cp [mg/L] or PCA") +
+  xlab("Time [h]");
 
 gridExtra::grid.arrange(v1s, v2s)
 ```
@@ -357,12 +359,14 @@ fit.TOF <- nlmixr(pk.turnover.emax3, warfarin, "focei", control=list(print=0),
 print(fit.TOF)
 plot(fit.TOF)
 
-v1f <- nlmixr::vpc(fit.TOF, show=list(obs_dv=T), scales="free_y") +
-    ylab("Warfarin Cp [mg/L] or PCA") +
-    xlab("Time [h]");
-v2f <- nlmixr::vpc(fit.TOF, show=list(obs_dv=T), pred_corr = TRUE) +
-        ylab("Prediction Corrected Warfarin Cp [mg/L] or PCA") +
-    xlab("Time [h]")
+v1f <-
+  nlmixr2::vpc(fit.TOF, show=list(obs_dv=T), scales="free_y") +
+  ylab("Warfarin Cp [mg/L] or PCA") +
+  xlab("Time [h]");
+v2f <-
+  nlmixr2::vpc(fit.TOF, show=list(obs_dv=T), pred_corr = TRUE) +
+  ylab("Prediction Corrected Warfarin Cp [mg/L] or PCA") +
+  xlab("Time [h]")
 
 gridExtra::grid.arrange(v1f, v2f)
 ```

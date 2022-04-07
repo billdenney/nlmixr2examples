@@ -1,5 +1,5 @@
 
-library(nlmixr)
+library(nlmixr2)
 
 one.compartment.oral.model <- function() {
       ini({
@@ -24,7 +24,7 @@ one.compartment.oral.model <- function() {
         Cl <- exp(lCl + eta.Cl)
         Vc <- exp(lVc + eta.Vc)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d / dt(depot)  = -KA * depot
         d / dt(centr)  =  KA * depot - (Cl / Vc) * centr
         ## Concentration is calculated
@@ -38,9 +38,9 @@ modX<-nlmixr(one.compartment.oral.model)
 
 
 do_nlmixrODE <- function(i, method="focei") {
-    .nlmixr <- as.character(packageVersion("nlmixr"))
+    .nlmixr <- as.character(packageVersion("nlmixr2"))
     .os <- .Platform$OS.type;
-    .nlmixr <- packageVersion("nlmixr")
+    .nlmixr <- packageVersion("nlmixr2")
     if (Sys.info()["sysname"]=="Darwin") .os <- "mac"
     file <- paste("sparse-", .nlmixr, "-", method, "-", i, "-", .os, ".R", sep = "");
     if (!file.exists(file)){
@@ -71,14 +71,14 @@ library(doParallel)
 cl <- makeCluster(7, outfile="")
 registerDoParallel(cl)
 
-nlmixr <-
-    foreach(i = 1:500, .packages = c('nlmixr')) %dopar%
+nlmixr_done <-
+    foreach(i = 1:500, .packages = c('nlmixr2')) %dopar%
     do_nlmixrODE(i, method="focei")
 
 nlmixrS <-
-    foreach(i = 1:500, .packages = c('nlmixr')) %dopar%
+    foreach(i = 1:500, .packages = c('nlmixr2')) %dopar%
     do_nlmixrODE(i, method="saem")
 
 nlmixrN <-
-    foreach(i = 1:500, .packages = c('nlmixr')) %dopar%
+    foreach(i = 1:500, .packages = c('nlmixr2')) %dopar%
     do_nlmixrODE(i, method="nlme")

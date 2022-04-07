@@ -14,11 +14,11 @@ knitr::opts_chunk$set(
   )
 ## These options cache the models and the model simulations in R
 ## To run the actual models on your system, take the save options off.
-options(nlmixr.save=TRUE,
-        nlmixr.save.dir=system.file(package="nlmixr.examples"));
+options(nlmixr2.save=TRUE,
+        nlmixr2.save.dir=system.file(package="nlmixr.examples"));
 
 ```
-![nlmixr](logo.png)
+![nlmixr2](logo.png)
 
 This is an example of a complex model that can be estimated. 
 
@@ -27,14 +27,14 @@ nimotuzumab is illustrated (Rodríguez-Vera et al. 2015).
 
 ![Model Schematic](nimo_fig1.PNG)
 
-# nlmixr model
+# nlmixr2 model
 
 ```{r}
-library(nlmixr)
+library(nlmixr2)
 
-## Note to get the datasets you can use:
-## remotes::install_github("nlmixrdevelopment/nlmixr.examples")
-library(nlmixr.examples) ## For nlmixr.examples data
+# Note to get the datasets you can use:
+# remotes::install_github("nlmixr2/nlmixr2examples")
+library(nlmixr2examples) # For nlmixr2examples data
 
 library(xpose)
 library(xpose.nlmixr)
@@ -106,13 +106,13 @@ fit  <- fit %>% addCwres() %>% addNpde();
 
 ##Goodness-of-fit plots
 
-plot(fit); ## Standard nlmixr plots
+plot(fit); ## Standard nlmixr2 plots
 
 ################################################################################
 ## Xpose plots; Need to print otherwise running a script won't
 ## show xpose plots
 ################################################################################
-xpdb <- xpose_data_nlmixr(fit) ## first convert to nlmixr object
+xpdb <- xpose_data_nlmixr(fit) ## first convert to nlmixr2 object
 
 print(dv_vs_pred(xpdb) +
       ylab("Observed Nimotuzumab Concentrations (ug/mL)") +

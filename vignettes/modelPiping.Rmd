@@ -1,5 +1,5 @@
 ---
-title: "Modifying nlmixr models by piping"
+title: "Modifying nlmixr2 models by piping"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -13,22 +13,21 @@ knitr::opts_chunk$set(
 
 ## These options cache the models and the model simulations in R
 ## To run the actual models on your system, take the save options off.
-options(nlmixr.save=TRUE,
-        nlmixr.save.dir=system.file(package="nlmixr.examples"));
+options(nlmixr2.save=TRUE,
+        nlmixr2.save.dir=system.file(package="nlmixr.examples"));
 ```
 
-![nlmixr](logo.png)
+![nlmixr2](logo.png)
 
 # Changing models via piping
 
-As in the running nlmixr vignette, Let's start with a very simple PK
+As in the running nlmixr2 vignette, let's start with a very simple PK
 example, using the single-dose theophylline dataset generously
 provided by Dr. Robert A. Upton of the University of California, San
 Francisco:
 
 ```{r}
-
-library(nlmixr)
+library(nlmixr2)
 
 one.compartment <- function() {
     ini({
@@ -74,7 +73,7 @@ example try a range of starting values to see how the system behaves
 (either by full estimation or by a posthoc estimation). 
 In these situations it can be come tedious to modify the models by hand.
 
-nlmixr provides the ability to:
+nlmixr2 provides the ability to:
 
 1. Change parameter estimates before or after running a model. (ie
    `ini(tka=0.5)`)
@@ -125,7 +124,7 @@ print(one.ka.0.7)
 When developing models, often you add and remove between subject
 variability to parameters, add covariates to the effects, and/or
 change the residual errors.  You can change lines in the model by
-piping the fit or the nlmixr model specification function to a `model`
+piping the fit or the nlmixr2 model specification function to a `model`
 
 ## Adding or Removing between subject variability 
 
@@ -135,7 +134,7 @@ remove the between subject variability in the ka parameter by changing that line
 
 For example to remove a eta from a prior fit or prior model
 specification function, simply pipe it to the model function.  You can
-then re-estimate by piping it to the `nlmixr` function again.
+then re-estimate by piping it to the `nlmixr2` function again.
 
 ```{r}
 ## Remove eta.ka on ka
@@ -180,9 +179,9 @@ parameters:
 ## Adding Covariate effects
 
 ```{r}
-## Note currently cov is needed as a prefix so nlmixr knows this is an
-## estimated parameter not a parameter
-wt70 <- fit %>% ## FIXME could be based on if it finds the covarite in the last used nlmixr data.
+# Note currently cov is needed as a prefix so nlmixr2 knows this is an
+# estimated parameter not a parameter
+wt70 <- fit %>% # FIXME could be based on if it finds the covariate in the last used nlmixr2 data.
     model({cl <- exp(tcl + eta.cl)*(WT/70)^covWtPow}) %>%
     ini(covWtPow=fix(0.75)) %>%
     nlmixr(est="focei", table=list(cwres=TRUE, npde=TRUE))

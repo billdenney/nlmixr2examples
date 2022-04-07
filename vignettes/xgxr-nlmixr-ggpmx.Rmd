@@ -1,5 +1,5 @@
 ---
-title: "xgxr nlmixr and ggPmx integration"
+title: "xgxr nlmixr2 and ggPmx integration"
 output:
   html_document:
     self_contained: no
@@ -13,16 +13,16 @@ knitr::opts_chunk$set(
 
 ## These options cache the models and the model simulations in R
 ## To run the actual models on your system, take the save options off.
-options(nlmixr.save=TRUE,
-        nlmixr.save.dir=system.file(package="nlmixr.examples"));
+options(nlmixr2.save=TRUE,
+        nlmixr2.save.dir=system.file(package="nlmixr.examples"));
 
 ```
 
-This shows an example of integrated workflow between `xgxr` `nlmixr`
+This shows an example of integrated workflow between `xgxr` `nlmixr2`
 and `ggPmx`
 
 ```{r load}
-library(nlmixr)
+library(nlmixr2)
 library(xgxr)
 library(readr)
 library(ggplot2)

@@ -17,11 +17,11 @@ knitr::opts_chunk$set(
 
 ## These options cache the models and the model simulations in R
 ## To run the actual models on your system, take the save options off.
-options(nlmixr.save=TRUE,
-        nlmixr.save.dir=system.file(package="nlmixr.examples"));
+options(nlmixr2.save=TRUE,
+        nlmixr2.save.dir=system.file(package="nlmixr.examples"));
 ```
 
-![nlmixr](logo.png)
+![nlmixr2](logo.png)
 
 # Adding Covariances between random effects
 
@@ -34,13 +34,12 @@ An example of this is the Phenobarbital data:
 
 ```{r}
 ## Load Phenobarb data
-library(nlmixr)
-
+library(nlmixr2)
 ```
 
 ## Model Specification
-```{r}
 
+```{r}
 pheno <- function() {
   ini({
     tcl <- log(0.008) # typical value of clearance
@@ -85,11 +84,11 @@ plot(augPred(fit))
 
 ```{r}
 library(ggplot2)
-p1 <- nlmixr::vpc(fit, show=list(obs_dv=TRUE));
+p1 <- nlmixr2::vpc(fit, show=list(obs_dv=TRUE));
 p1 <- p1+ ylab("Concentrations")
 
 ## A prediction-corrected VPC
-p2 <- nlmixr::vpc(fit, pred_corr = TRUE, show=list(obs_dv=TRUE))
+p2 <- nlmixr2::vpc(fit, pred_corr = TRUE, show=list(obs_dv=TRUE))
 p2 <- p2+ ylab("Prediction-Corrected Concentrations")
 
 library(gridExtra)

@@ -1,4 +1,4 @@
-options(RxODE.cache.directory="~/.rxCache")
+options(rxode2.cache.directory="~/.rxCache")
 ## runModel <- "U003"; runEst <- "focei"; source("uiModels.R")
 ## runModel <- "U014"; runEst <- "focei"; source("uiModels.R")
 ## runModel <- "U025"; runEst <- "focei"; source("uiModels.R")
@@ -10,8 +10,9 @@ options(RxODE.cache.directory="~/.rxCache")
 ## runModel <- "U014" and then source the file
 ## Use runEst to select one estimation type ie
 ## runEst  <- "focei"
-library(nlmixr)
+library(nlmixr2)
 library(testthat)
+
 source("helper-prep_fit.R")
 one.compartment.IV.model <- function(){
     ini({ # Where initial conditions/variables are specified
@@ -31,7 +32,7 @@ one.compartment.IV.model <- function(){
         # The model uses the ini-defined variable names
         Vc <- exp(lVc + eta.Vc)
         Cl <- exp(lCl + eta.Cl)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d / dt(centr) = -(Cl / Vc) * centr;
         ## Concentration is calculated
         cp = centr / Vc;
@@ -82,7 +83,7 @@ one.compartment.IV.MM.model <- function(){
         Vc <- exp(lVc + eta.Vc)
         VM <- exp(lVM + eta.VM)
         KM <- exp(lKM + eta.KM)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d/dt(centr)  = -(VM*centr/Vc)/(KM+centr/Vc);
         ## Concentration is calculated
         cp = centr / Vc;
@@ -111,7 +112,7 @@ one.compartment.IV.MM.model2 <- function(){
         Vc <- exp(lVc + eta.Vc)
         VM <- exp(lVM + eta.VM)
         KM <- exp(lKM + eta.KM)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d/dt(centr)  = -(VM*centr/Vc)/(KM+centr/Vc);
         ## Concentration is calculated
         cp = centr / Vc;
@@ -142,7 +143,7 @@ one.compartment.oral.model <- function(){
         Cl <- exp(lCl + eta.Cl)
         Vc <- exp(lVc + eta.Vc)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d/dt(depot)    = -KA*depot;
         d/dt(centr)  =  KA*depot-(Cl/Vc)*centr;
         ## Concentration is calculated
@@ -198,7 +199,7 @@ one.compartment.oral.model2 <- function(){
         Cl <- exp(lCl + eta.Cl)
         Vc <- exp(lVc + eta.Vc)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d/dt(depot)    = -KA*depot;
         d/dt(centr)  =  KA*depot-(Cl/Vc)*centr;
         ## Concentration is calculated
@@ -258,7 +259,7 @@ one.compartment.oral.MM.model <- function(){
         VM <- exp(lVM + eta.VM)
         KM <- exp(lKM + eta.KM)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         d/dt(depot)    = -KA*depot;
         d/dt(centr)  =  KA*depot-(VM*centr/Vc)/(KM+centr/Vc);
         ## Concentration is calculated
@@ -293,7 +294,7 @@ two.compartment.IV.model <- function(){
         Cl <- exp(lCl + eta.Cl)
         Vp <- exp(lVp + eta.Vp)
         Q <- exp(lQ + eta.Q)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K10<- Cl/Vc
         K12<- Q/Vc
         K21<- Q/Vp
@@ -363,7 +364,7 @@ two.compartment.IV.MM.model <- function(){
         Vc <- exp(lVc + eta.Vc)
         Q  <- exp(lQ  + eta.Q)
         Vp <- exp(lVp + eta.Vp)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K12<- Q/Vc
         K21<- Q/Vp
         d/dt(centr)  = K21*periph-K12*centr-(VM*centr/Vc)/(KM+centr/Vc);
@@ -402,7 +403,7 @@ two.compartment.IV.MM.model2 <- function(){
         Vc <- exp(lVc + eta.Vc)
         Q  <- exp(lQ  + eta.Q)
         Vp <- exp(lVp + eta.Vp)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K12<- Q/Vc
         K21<- Q/Vp
         d/dt(centr)  = K21*periph-K12*centr-(VM*centr/Vc)/(KM+centr/Vc);
@@ -441,7 +442,7 @@ two.compartment.IV.MM.model3 <- function(){
         Vc <- exp(lVc + eta.Vc)
         Q  <- exp(lQ  + eta.Q)
         Vp <- exp(lVp + eta.Vp)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K12<- Q/Vc
         K21<- Q/Vp
         d/dt(centr)  = K21*periph-K12*centr-(VM*centr/Vc)/(KM+centr/Vc);
@@ -479,7 +480,7 @@ two.compartment.oral.model <- function(){
         Vp <- exp(lVp + eta.Vp)
         Q  <- exp(lQ + eta.Q)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K10<- Cl/Vc
         K12<- Q/Vc
         K21<- Q/Vp
@@ -556,7 +557,7 @@ two.compartment.oral.MM.model <- function(){
         VM <- exp(lVM + eta.VM)
         KM <- exp(lKM + eta.KM)
         KA <- exp(lKA + eta.KA)
-        # RxODE-style differential equations are supported
+        # rxode2-style differential equations are supported
         K12<- Q/Vc
         K21<- Q/Vp
         d/dt(depot)    = -KA*depot;
@@ -569,7 +570,7 @@ two.compartment.oral.MM.model <- function(){
     })
 }
 
-require(dplyr);
+require(dplyr)
 
 nmModels <- (ls(pattern="[.]compartment[.]"))
 getModel <- function(cmt=1,oral=FALSE,mm=FALSE,extra="",solve=FALSE){
@@ -684,7 +685,7 @@ if (exists("runEst", globalenv())){
 }
 env <- environment()
 
-ns <- loadNamespace("nlmixr")
+ns <- loadNamespace("nlmixr2")
 
 os <- .Platform$OS.type ## On mac this is "unix"
 if (Sys.info()["sysname"]=="Darwin") os <- "mac"
@@ -755,11 +756,10 @@ for (opt in opts){
                 }
             }})
     }
-    ## context(sprintf("%s-UI-003ode: one-compartment bolus, steady-state", opt))
-    ## runno <- paste0(opt, "U003ode")
-    ## fit[[runno]] <-
-    ## source(genIfNeeded())
+    # context(sprintf("%s-UI-003ode: one-compartment bolus, steady-state", opt))
+    # runno <- paste0(opt, "U003ode")
+    # fit[[runno]] <-
+    # source(genIfNeeded())
 }
 
 ## U014
-

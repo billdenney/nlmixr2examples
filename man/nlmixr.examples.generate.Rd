@@ -2,10 +2,10 @@
 % Please edit documentation in R/nlmixr.R
 \name{nlmixr.examples.generate}
 \alias{nlmixr.examples.generate}
-\title{Generate nlmixr.examples website}
+\title{Generate nlmixr2examples website}
 \usage{
-nlmixr.examples.generate()
+\method{nlmixr}{examples.generate}()
 }
 \description{
-Not really inteded for use
+Not really intended for use
 }
